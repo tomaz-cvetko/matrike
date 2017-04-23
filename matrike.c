@@ -5,7 +5,7 @@ float **ustvari_matriko(int rows, int cols){
   float **A;
   A = malloc(rows * sizeof *A);
   for(int i = 0; i < rows; i++){
-    *(A+i) = (float*)malloc(rows*sizeof **(A+i));
+    *(A+i) = (float*)malloc(cols*sizeof **(A+i));
   }
 
   return A;
