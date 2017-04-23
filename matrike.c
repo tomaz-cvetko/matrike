@@ -5,7 +5,7 @@ float **ustvari_matriko(int rows, int cols){
   float **A;
   A = malloc(rows * sizeof *A);
   for(int i = 0; i < rows; i++){
-    *(A+i) = (float*)malloc(cols*sizeof **(A+i));
+    *(A+i) = (float*)malloc(rows*sizeof **(A+i));
   }
 
   return A;
@@ -63,7 +63,8 @@ void odstej_xvrstico(float **matrika, int tarca, int zacetek, int stolpci, int s
   }
 }
 
-void gauss_jordan(float **znana, int rows, int cols, float **pridruzena){
+float gauss_jordan(float **znana, int rows, int cols, float **pridruzena){
+  float det = 1;
   int vrstica = 0;
   for(int j = 0; j < cols; j++){
     int test = 0;
@@ -73,22 +74,24 @@ void gauss_jordan(float **znana, int rows, int cols, float **pridruzena){
         if(vrstica != i){
           zamenjaj_vrstici(znana, vrstica, cols, i);
           zamenjaj_vrstici(pridruzena, vrstica, cols, i); //matriki sta istih dimenzij
+          det *= 1;
 
           printf("Zamenjani vrstici:\n");
           print_matrix(znana, rows, cols, 1);
           print_matrix(pridruzena, rows, cols, 2);
-          //do tu je vse super
         }
         test = 1;
         break;
       }
       continue;
     }
+
     if(test == 1){
       float m = znana[vrstica][j];
       if (m != 1){
         deli_vrstico(znana, vrstica, cols, m);
         deli_vrstico(pridruzena, vrstica, cols, m);
+        det *= m;
 
         printf("Zdeljeni vrstici z %.2f:\n", m);
         print_matrix(znana, rows, cols, 1);
@@ -112,7 +115,11 @@ void gauss_jordan(float **znana, int rows, int cols, float **pridruzena){
       //vse vrednosti razen ene so iznicene, lahko gre v naslednji stolpec in tudi vrstica, ki jo nastavljamo je +1
       vrstica++;
     }
+    else {
+      det = 0;
+    }
   }
+  return det;
 }
 
 int main(void){
@@ -141,10 +148,11 @@ int main(void){
   print_matrix(matrika1, rows, cols, 1);
   print_matrix(matrika2, rows, cols, 2);
 
-  gauss_jordan(matrika1, rows, cols, matrika2);
+  float determinanta = gauss_jordan(matrika1, rows, cols, matrika2);
   printf("\nAlgorithm complete. Printing results: ...\n\n");
   print_matrix(matrika1, rows, cols, 1);
   print_matrix(matrika2, rows, cols, 2);
+  printf("Determinanta matrike je %f\n", determinanta);
 
   for(int i = 0; i < rows; i++){
     free(*(matrika1+i));
