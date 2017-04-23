@@ -12,6 +12,17 @@ float **ustvari_matriko(int rows, int cols){
 }
 
 void napolni_matriko(float **matrika, int rows, int cols, int index){
+  if(index == -1){
+    //ustvari identiteto dimenzije rows
+    for (int i = 0; i < rows; i++){
+      for (int j = 0; j < rows; j++){
+        if(i == j) matrika[i][j] = 1;
+        else matrika[i][j] = 0;
+      }
+    }
+    return;
+  }
+
   printf("You will fill your matrix number %d row by row:\n", index);
   for (int i = 0; i < rows; i++){
     //printf("\nEnter numbers in the %dth row: <num1> <num2> ... <num%d>\n", i+1, cols);
@@ -122,6 +133,36 @@ float gauss_jordan(float **znana, int rows, int cols, float **pridruzena){
   return det;
 }
 
+void flow_control(char mode, float **mat1, float **mat2){
+  int rows, cols;
+  if (mode == 'a'){
+    printf("\nEnter dimension (you chose inverse calculation mode): <dim>\n");
+    scanf("%d", &rows);
+
+    mat1 = ustvari_matriko(rows, rows);
+    mat2 = ustvari_matriko(rows, rows);
+
+    napolni_matriko(mat1, rows, rows, 1);
+    napolni_matriko(mat2, rows, rows, -1);
+
+    printf("\nMatrix filled\n");
+    print_matrix(mat1, rows, cols, 1);
+
+    float determinanta = gauss_jordan(matrika1, rows, cols, matrika2);
+    printf("\nAlgorithm complete. Printing results: ...\n\n");
+    print_matrix(matrika1, rows, cols, 1);
+    printf("\nInverse matrix is:\n")
+    print_matrix(matrika2, rows, cols, -1);
+
+    printf("Determinanta matrike je %f\n", determinanta);
+    return;
+  }
+  if (mode == 'b'){
+    //work in progress
+  }
+
+}
+
 int main(void){
   int rows, cols;
   float **matrika1, **matrika2;
@@ -130,6 +171,13 @@ int main(void){
   \n b) resitev navadne matricne enacbe (kvadratne matrike) A*X = B, A prva matrika, B rezulat in X neznana matrika \
   \n c) racunanje resitev sistema inearnih enacb, ce v prvi stolpec druge matrike vnesemo desne strani enacajev\n");
   printf("=====================================================================================================\n");
+
+  char mode;
+  printf("\nWhat would you like to know?\na b or c?\n");
+  fflush(stdin);
+  getchar(mode);
+
+
   printf("\nEnter two numbers: <rows> <cols> (st.vrstic in st.stolpcev)\n");
   scanf("%d", &rows);
   //printf("Enter two numbers: <rows> <cols>\n");
@@ -154,7 +202,7 @@ int main(void){
   print_matrix(matrika2, rows, cols, 2);
 
   if (rows == cols){
-    printf("Determinanta matrike je %f\n", determinanta);    
+    printf("Determinanta matrike je %f\n", determinanta);
   }
 
 
