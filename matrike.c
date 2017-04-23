@@ -38,7 +38,7 @@ void print_matrix(float **matrika, int rows, int cols, int index){
 }
 
 void zamenjaj_vrstici(float **matrika, int prva, int stolpci, int druga){ //funkcija dela
-  //zamenja prvo in drugo vrstico (vrednosti v vsakem stolpcu)
+  //zamenja prvo in drugo vrstico (pointerja na vrstico)
   float *t = matrika[prva];
   matrika[prva] = matrika[druga];
   matrika[druga] = t;
