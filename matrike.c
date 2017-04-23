@@ -152,7 +152,11 @@ int main(void){
   printf("\nAlgorithm complete. Printing results: ...\n\n");
   print_matrix(matrika1, rows, cols, 1);
   print_matrix(matrika2, rows, cols, 2);
-  printf("Determinanta matrike je %f\n", determinanta);
+
+  if (rows == cols){
+    printf("Determinanta matrike je %f\n", determinanta);    
+  }
+
 
   for(int i = 0; i < rows; i++){
     free(*(matrika1+i));
